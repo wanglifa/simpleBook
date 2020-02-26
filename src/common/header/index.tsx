@@ -9,8 +9,17 @@ import {
   Button,
   SearchWrapper
 } from "./style";
+import {useState} from "react";
+import {FocusEventHandler} from "react";
 
 const Header: React.FC = () => {
+  const [focused, setFocused] = useState(false)
+  const onFocus: FocusEventHandler = () => {
+    setFocused(true)
+  }
+  const onBlur: FocusEventHandler = () => {
+    setFocused(false)
+  }
   return (
     <HeaderWrapper>
       <Logo/>
@@ -22,8 +31,10 @@ const Header: React.FC = () => {
           <i className={"iconfont"}>&#xe636;</i>
         </NavItem>
         <SearchWrapper>
-          <NavSearch/>
-          <i className={"iconfont"}>&#xe62d;</i>
+          <NavSearch className={focused ? 'focused' : ''}
+            onFocus={onFocus} onBlur={onBlur}
+          />
+          <i className={focused ? "focused iconfont" : 'iconfont'}>&#xe62d;</i>
         </SearchWrapper>
       </Nav>
       <Addition>

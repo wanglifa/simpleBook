@@ -1,11 +1,16 @@
 import styled from 'styled-components'
+import * as React from "react";
 import logoPic from '../../static/logo.png'
-export const HeaderWrapper = styled.div`
+import {HTMLAttributes} from "react";
+interface Prop extends HTMLAttributes<HTMLElement>{
+
+}
+export const HeaderWrapper: React.FC = styled.div`
   height: 58px;
   border-bottom: 1px solid #f0f0f0;
   position: relative;
 `;
-export const Logo = styled.a.attrs({
+export const Logo: React.FC = styled.a.attrs({
   href: '/'
 })`
   position: absolute;
@@ -17,14 +22,14 @@ export const Logo = styled.a.attrs({
   background: url(${logoPic});
   background-size: contain;
 `;
-export const Nav = styled.div`
+export const Nav: React.FC= styled.div`
   width: 960px;
   margin: 0 auto;
   height: 100%;
   padding-right: 70px;
   box-sizing: border-box;
 `;
-export const NavItem = styled.div`
+export const NavItem: React.FC<Prop> = styled.div`
   line-height: 56px;
   padding: 0 15px;
   font-size: 17px;
@@ -39,7 +44,7 @@ export const NavItem = styled.div`
     color: #ea6f5a;
   }
 `;
-export const SearchWrapper = styled.div`
+export const SearchWrapper: React.FC = styled.div`
   float: left;
   position: relative;
   .iconfont {
@@ -50,14 +55,18 @@ export const SearchWrapper = styled.div`
     line-height: 30px;
     border-radius: 15px;
     text-align: center;
+    &.focused {
+      background: #777;
+      color: #fff;
+    }
   }
 `
-export const NavSearch = styled.input.attrs({
+export const NavSearch: React.FC<Prop> = styled.input.attrs({
   placeholder: '搜索'
 })`
   width: 160px;
   height: 38px;
-  padding: 0 20px;
+  padding: 0 30px 0 20px;
   margin-top: 9px;
   box-sizing: border-box;
   border: none;
@@ -66,17 +75,21 @@ export const NavSearch = styled.input.attrs({
   border-radius: 19px;
   background: #eee;
   font-size: 14px;
+  color: #666;
   &::placeholder {
     color: #999;
   }
+  &.focused {
+    width: 240px;
+  }
 `;
-export const Addition = styled.div`
+export const Addition: React.FC = styled.div`
   position: absolute;
   right: 0;
   top: 0;
   height: 56px;
 `;
-export const Button = styled.div`
+export const Button: React.FC<Prop> = styled.div`
   float: right;
   margin-top: 9px;
   margin-right: 20px;
