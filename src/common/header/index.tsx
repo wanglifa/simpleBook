@@ -11,7 +11,8 @@ import {
 } from "./style";
 import { CSSTransition } from 'react-transition-group';
 import { connect } from "react-redux";
-import {State} from "../../store/reducer";
+import {State} from "./store/reducer";
+
 
 interface Prop {
   focused: boolean;
@@ -49,9 +50,9 @@ const Header: React.FC<Prop> = (props) => {
     </HeaderWrapper>
   )
 }
-const getPartialStore = (state: State) => {
+const getPartialStore = (state: {header: State}) => {
   return {
-    focused: state.focused
+    focused: state.header.focused
   }
 }
 const actionCreator = (dispatch: (a: {type: string}) => void) => {
