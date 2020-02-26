@@ -12,6 +12,7 @@ import {
 import { CSSTransition } from 'react-transition-group';
 import { connect } from "react-redux";
 import {State} from "./store/reducer";
+import * as actionCreator from './store/actionCreator'
 
 
 interface Prop {
@@ -55,16 +56,14 @@ const getPartialStore = (state: {header: State}) => {
     focused: state.header.focused
   }
 }
-const actionCreator = (dispatch: (a: {type: string}) => void) => {
+const mapDispatchToProps = (dispatch: (a: {type: string}) => void) => {
   return {
     onFocus: () => {
-      const action = {type: 'search_focus'}
-      dispatch(action)
+      dispatch(actionCreator.searchFocus())
     },
     onBlur: () => {
-      const action = {type: 'search_blur'}
-      dispatch(action)
+      dispatch(actionCreator.searchBlur())
     }
   }
 }
-export default connect(getPartialStore, actionCreator)(Header);
+export default connect(getPartialStore, mapDispatchToProps)(Header);
