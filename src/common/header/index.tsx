@@ -53,7 +53,7 @@ const Header: React.FC<Prop> = (props) => {
 }
 const getPartialStore = (state: {header: State}) => {
   return {
-    focused: state.header.focused
+    focused: state.header.get!('focused')
   }
 }
 const mapDispatchToProps = (dispatch: (a: {type: string}) => void) => {
