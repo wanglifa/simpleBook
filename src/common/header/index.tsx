@@ -12,7 +12,7 @@ import {
 import { CSSTransition } from 'react-transition-group';
 import { connect } from "react-redux";
 import {State} from "./store/reducer";
-import * as actionCreator from './store/actionCreator'
+import {actionCreator} from './store'
 
 
 interface Prop {
