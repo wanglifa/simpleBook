@@ -47,6 +47,18 @@ export const NavItem: React.FC<Prop> = styled.div`
 export const SearchWrapper: React.FC = styled.div`
   float: left;
   position: relative;
+  .slide-enter {
+    transition: all 0.3s linear;
+  }
+  .slide-enter-active {
+    width: 240px;
+  }
+  .slide-exit {
+    transition: all 0.3s linear;
+  }
+  .slide-exit-done {
+    width: 160px;
+  }
   .iconfont {
     position: absolute;
     right: 5px;

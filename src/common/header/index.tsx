@@ -9,17 +9,17 @@ import {
   Button,
   SearchWrapper
 } from "./style";
-import {useState} from "react";
-import {FocusEventHandler} from "react";
+import { CSSTransition } from 'react-transition-group';
+import { connect } from "react-redux";
+import {State} from "../../store/reducer";
 
-const Header: React.FC = () => {
-  const [focused, setFocused] = useState(false)
-  const onFocus: FocusEventHandler = () => {
-    setFocused(true)
-  }
-  const onBlur: FocusEventHandler = () => {
-    setFocused(false)
-  }
+interface Prop {
+  focused: boolean;
+  onFocus: () => void;
+  onBlur: () => void;
+}
+
+const Header: React.FC<Prop> = (props) => {
   return (
     <HeaderWrapper>
       <Logo/>
@@ -31,10 +31,12 @@ const Header: React.FC = () => {
           <i className={"iconfont"}>&#xe636;</i>
         </NavItem>
         <SearchWrapper>
-          <NavSearch className={focused ? 'focused' : ''}
-            onFocus={onFocus} onBlur={onBlur}
-          />
-          <i className={focused ? "focused iconfont" : 'iconfont'}>&#xe62d;</i>
+          <CSSTransition in={props.focused} timeout={100} classNames={"slide"}>
+            <NavSearch className={props.focused ? 'focused' : ''}
+                       onFocus={props.onFocus} onBlur={props.onBlur}
+            />
+          </CSSTransition>
+          <i className={props.focused ? "focused iconfont" : 'iconfont'}>&#xe62d;</i>
         </SearchWrapper>
       </Nav>
       <Addition>
@@ -47,4 +49,21 @@ const Header: React.FC = () => {
     </HeaderWrapper>
   )
 }
-export default Header;
+const getPartialStore = (state: State) => {
+  return {
+    focused: state.focused
+  }
+}
+const actionCreator = (dispatch: (a: {type: string}) => void) => {
+  return {
+    onFocus: () => {
+      const action = {type: 'search_focus'}
+      dispatch(action)
+    },
+    onBlur: () => {
+      const action = {type: 'search_blur'}
+      dispatch(action)
+    }
+  }
+}
+export default connect(getPartialStore, actionCreator)(Header);
