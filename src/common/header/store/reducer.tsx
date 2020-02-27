@@ -12,15 +12,12 @@ const defaultState = fromJS({
 })
 type Rducer = (state: State, action: {type: string, data?: any}) => State;
 export const reducer: Rducer = (state= defaultState, action) => {
-  if (action.type === constants.SEARCH_FOCUS) {
-    return state.set!('focused', true)
+  switch (action.type) {
+    case constants.SEARCH_FOCUS:
+      return state.set!('focused', true)
+    case constants.SEARCH_BLURS:
+      return state.set!('focused', false)
+    case constants.CHANGE_LIST:
+      return state.set!('list', action.data)
   }
-  if (action.type === constants.SEARCH_BLURS) {
-    return state.set!('focused', false)
-  }
-  if (action.type === constants.CHANGE_LIST) {
-    console.log(action, 'action')
-    return state.set!('list', action.data)
-  }
-  return state
 }
