@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 import * as React from "react";
+import {HTMLAttributes} from "react";
+interface Prop extends HTMLAttributes<HTMLElement>{
+
+}
 export const HomeWrapper: React.FC = styled.div`
 	overflow: hidden;
 	width: 960px;
@@ -50,7 +54,7 @@ export const TopicItem: React.FC = styled.div`
 	}
 `;
 
-export const ListItem: React.FC = styled.div`
+export const ListItem: React.FC<Prop> = styled.div`
 	overflow: hidden;
 	padding: 20px 0;
 	border-bottom: 1px solid #dcdcdc;
@@ -84,7 +88,7 @@ export const RecommendWrapper: React.FC = styled.div`
 	width: 280px;
 `;
 
-export const RecommendItem: React.FC = styled.div`
+export const RecommendItem: React.FC<Prop | {imgUrl: string}> = styled.div`
 	width: 280px;
 	height: 50px;
 	background-size: contain;
@@ -99,7 +103,7 @@ export const WriterWrapper: React.FC = styled.div`
 	text-align: center;
 `;
 
-export const LoadMore: React.FC = styled.div`
+export const LoadMore: React.FC<Prop> = styled.div`
 	width: 100%;
 	height: 40px;
 	line-height: 40px;

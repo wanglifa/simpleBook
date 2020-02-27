@@ -24,7 +24,7 @@ const changeList = (data: string[]) => ({
   totalPage: Math.ceil(data.length / 10)
 })
 export const getList = () => {
-  return (dispatch: (a: {type: string}) => void) => {
+  return (dispatch: (s: {}) => void) => {
     axios.get('/api/headerList.json').then((res => {
       dispatch(changeList(res.data.data))
     })).catch(error=> console.log(error))

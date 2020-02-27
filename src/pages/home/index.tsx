@@ -8,8 +8,17 @@ import Topic from "./components/Topic";
 import List from "./components/List";
 import Recommend from "./components/Recommend";
 import Writer from "./components/Writer";
+import {actionCreator} from "./store";
+import {useEffect} from "react";
+import {connect} from "react-redux";
 
-const Home: React.FC = () => {
+interface Prop {
+  getTopicList: () => void;
+}
+const Home: React.FC<Prop> = (props) => {
+  useEffect(() => {
+    props.getTopicList()
+  }, [])
   return (
     <HomeWrapper>
       <HomeLeft>
@@ -24,4 +33,11 @@ const Home: React.FC = () => {
     </HomeWrapper>
   )
 }
-export default Home;
+const mapDispatch = (dispatch: (a: {type: string} | any) => void) => {
+  return {
+    getTopicList: () => {
+      dispatch(actionCreator.getTopList())
+    }
+  }
+}
+export default connect(null, mapDispatch)(Home);

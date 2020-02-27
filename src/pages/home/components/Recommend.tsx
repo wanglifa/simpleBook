@@ -1,7 +1,25 @@
 import * as React from "react";
-const Recommend: React.FC = () => {
+import { connect } from "react-redux";
+import {HomeState} from "../store/reducer";
+import {
+  RecommendWrapper,
+  RecommendItem
+} from "../style";
+
+interface Prop {
+  list?: (string & {get: (s: string) => string})[];
+}
+const Recommend: React.FC<Prop> = (props) => {
+  const { list } = props
   return (
-    <div>Recommend</div>
+    <RecommendWrapper>
+      {list && list.map(item =>
+        <RecommendItem imgUrl={item.get('imgUrl')} key={item.get('id')}/>
+      )}
+    </RecommendWrapper>
   )
 }
-export default Recommend;
+const mapState = (state: HomeState) => ({
+  list: state.get!('home').get('recommend')
+})
+export default connect(mapState, null)(Recommend);
