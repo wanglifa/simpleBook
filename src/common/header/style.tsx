@@ -73,7 +73,7 @@ export const SearchWrapper: React.FC = styled.div`
     }
   }
 `;
-export const SearchInfo = styled.div`
+export const SearchInfo: React.FC<Prop> = styled.div`
 	position: absolute;
 	left: 0;
 	top: 56px;
@@ -91,7 +91,7 @@ export const SearchInfoTitle: React.FC = styled.div`
 	color: #969696;
 `;
 
-export const SearchInfoSwitch: React.FC = styled.span`
+export const SearchInfoSwitch: React.FC<Prop> = styled.span`
 	float: right;
 	font-size: 13px;
 	cursor: pointer;

@@ -18,15 +18,32 @@ import { CSSTransition } from 'react-transition-group';
 import { connect } from "react-redux";
 import {State} from "./store/reducer";
 import {actionCreator} from './store'
+import {MouseEventHandler} from "react";
+import {FocusEventHandler} from "react";
 
 
 interface Prop {
   focused: boolean;
-  onFocus: () => void;
-  onBlur: () => void;
-  list: string[]
+  onFocus: (s: string[] & {size: number}) => void;
+  onBlur: FocusEventHandler;
+  list: string[];
+  page: number;
+  onMouseEnter: MouseEventHandler;
+  onMouseLeave: MouseEventHandler;
+  mouseIn: boolean;
+  onClick: (a: number, b: number) => void;
+  totalPage: number;
 }
 const Header: React.FC<Prop> = (props) => {
+  const pageList = []
+  const newList = (props.list as (string[] & {toJS: () => string[]})).toJS()
+  for (let i = (props.page - 1) * 10; i < props.page * 10; i++) {
+    if (newList.length) {
+      pageList.push(
+        <SearchInfoItem key={newList[i]}>{newList[i]}</SearchInfoItem>
+      )
+    }
+  }
   return (
     <HeaderWrapper>
       <Logo/>
@@ -40,20 +57,18 @@ const Header: React.FC<Prop> = (props) => {
         <SearchWrapper>
           <CSSTransition in={props.focused} timeout={100} classNames={"slide"}>
             <NavSearch className={props.focused ? 'focused' : ''}
-                       onFocus={props.onFocus} onBlur={props.onBlur}
+                       onFocus={() =>props.onFocus(props.list as (string[] & {size: number}))} onBlur={props.onBlur}
             />
           </CSSTransition>
           <i className={props.focused ? "focused iconfont" : 'iconfont'}>&#xe62d;</i>
           {
-            props.focused ?
-              <SearchInfo>
+            (props.focused || props.mouseIn) ?
+              <SearchInfo onMouseEnter={props.onMouseEnter} onMouseLeave={props.onMouseLeave}>
                 <SearchInfoTitle>
                   热门搜索
-                  <SearchInfoSwitch>换一批</SearchInfoSwitch>
+                  <SearchInfoSwitch onClick={() => props.onClick(props.page, props.totalPage)}>换一批</SearchInfoSwitch>
                   <SearchInfoList>
-                    {props.list.map(item =>
-                      <SearchInfoItem key={item}>{item}</SearchInfoItem>
-                    )}
+                    {pageList}
                   </SearchInfoList>
                 </SearchInfoTitle>
               </SearchInfo>
@@ -74,17 +89,30 @@ const Header: React.FC<Prop> = (props) => {
 const getPartialStore = (state: State) => {
   return {
     focused: state.get!('header').get!('focused'),
-    list: state.get!('header').get!('list')
+    list: state.get!('header').get!('list'),
+    page: state.get!('header').get!('page'),
+    mouseIn: state.get!('header').get!('mouseIn'),
+    totalPage: state.get!('header').get!('totalPage')
   }
 }
 const mapDispatchToProps = (dispatch: (a: {type: string} | any) => void) => {
   return {
-    onFocus: () => {
-      dispatch(actionCreator.getList())
+    onFocus: (list: string[] & {size: number}) => {
+      list.size === 0 && dispatch(actionCreator.getList())
       dispatch(actionCreator.searchFocus())
     },
     onBlur: () => {
       dispatch(actionCreator.searchBlur())
+    },
+    onMouseEnter: () => {
+      dispatch(actionCreator.mouseEnter())
+    },
+    onMouseLeave: () => {
+      dispatch(actionCreator.mouseLeave())
+    },
+    onClick: (page: number, total: number) => {
+      const _newPage = page < total ? page + 1 : 1;
+      dispatch(actionCreator.onClick(_newPage))
     }
   }
 }
