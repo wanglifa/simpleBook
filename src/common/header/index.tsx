@@ -7,7 +7,12 @@ import {
   NavSearch,
   Addition,
   Button,
-  SearchWrapper
+  SearchWrapper,
+  SearchInfo,
+  SearchInfoItem,
+  SearchInfoList,
+  SearchInfoSwitch,
+  SearchInfoTitle
 } from "./style";
 import { CSSTransition } from 'react-transition-group';
 import { connect } from "react-redux";
@@ -19,8 +24,8 @@ interface Prop {
   focused: boolean;
   onFocus: () => void;
   onBlur: () => void;
+  list: string[]
 }
-
 const Header: React.FC<Prop> = (props) => {
   return (
     <HeaderWrapper>
@@ -39,6 +44,21 @@ const Header: React.FC<Prop> = (props) => {
             />
           </CSSTransition>
           <i className={props.focused ? "focused iconfont" : 'iconfont'}>&#xe62d;</i>
+          {
+            props.focused ?
+              <SearchInfo>
+                <SearchInfoTitle>
+                  热门搜索
+                  <SearchInfoSwitch>换一批</SearchInfoSwitch>
+                  <SearchInfoList>
+                    {props.list.map(item =>
+                      <SearchInfoItem key={item}>{item}</SearchInfoItem>
+                    )}
+                  </SearchInfoList>
+                </SearchInfoTitle>
+              </SearchInfo>
+              : null
+          }
         </SearchWrapper>
       </Nav>
       <Addition>
@@ -51,14 +71,16 @@ const Header: React.FC<Prop> = (props) => {
     </HeaderWrapper>
   )
 }
-const getPartialStore = (state: {header: State}) => {
+const getPartialStore = (state: State) => {
   return {
-    focused: state.header.get!('focused')
+    focused: state.get!('header').get!('focused'),
+    list: state.get!('header').get!('list')
   }
 }
-const mapDispatchToProps = (dispatch: (a: {type: string}) => void) => {
+const mapDispatchToProps = (dispatch: (a: {type: string} | any) => void) => {
   return {
     onFocus: () => {
+      dispatch(actionCreator.getList())
       dispatch(actionCreator.searchFocus())
     },
     onBlur: () => {
