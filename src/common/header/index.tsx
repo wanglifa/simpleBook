@@ -18,8 +18,10 @@ import { CSSTransition } from 'react-transition-group';
 import { connect } from "react-redux";
 import {State} from "./store/reducer";
 import {actionCreator} from './store'
+import {actionCreator as LoginActionCreator} from '../../pages/login/store'
 import {MouseEventHandler} from "react";
 import {FocusEventHandler} from "react";
+import {Link} from "react-router-dom";
 
 
 interface Prop {
@@ -33,6 +35,8 @@ interface Prop {
   mouseIn: boolean;
   onClick: (a: number, b: number) => void;
   totalPage: number;
+  login: boolean;
+  onClickLoginOut: () => void;
 }
 const Header: React.FC<Prop> = (props) => {
   const pageList = []
@@ -50,7 +54,13 @@ const Header: React.FC<Prop> = (props) => {
       <Nav>
         <NavItem className={"left active"}>首页</NavItem>
         <NavItem className={"left"}>下载App</NavItem>
-        <NavItem className={"right"}>登录</NavItem>
+        { props.login ?
+          <NavItem className={"right"} onClick={props.onClickLoginOut}>退出</NavItem>
+          :
+          <Link to={"/login"}>
+            <NavItem className={"right"}>登录</NavItem>
+          </Link>
+        }
         <NavItem className={"right"}>
           <i className={"iconfont"}>&#xe636;</i>
         </NavItem>
@@ -92,7 +102,8 @@ const getPartialStore = (state: State) => {
     list: state.get!('header').get!('list'),
     page: state.get!('header').get!('page'),
     mouseIn: state.get!('header').get!('mouseIn'),
-    totalPage: state.get!('header').get!('totalPage')
+    totalPage: state.get!('header').get!('totalPage'),
+    login: state.get!('login').get!('login')
   }
 }
 const mapDispatchToProps = (dispatch: (a: {type: string} | any) => void) => {
@@ -113,6 +124,9 @@ const mapDispatchToProps = (dispatch: (a: {type: string} | any) => void) => {
     onClick: (page: number, total: number) => {
       const _newPage = page < total ? page + 1 : 1;
       dispatch(actionCreator.onClick(_newPage))
+    },
+    onClickLoginOut: () => {
+      dispatch(LoginActionCreator.onClickLoginOut())
     }
   }
 }
