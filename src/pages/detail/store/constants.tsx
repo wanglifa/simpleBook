@@ -1,0 +1,1 @@
+export const DETAIL_LIST = 'detail/DETAIL_LIST'

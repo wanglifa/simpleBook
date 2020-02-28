@@ -7,6 +7,7 @@ import {
 import { connect } from "react-redux";
 import {HomeState, TextList} from "../store/reducer";
 import {actionCreator} from '../store'
+import { Link } from 'react-router-dom'
 interface Prop {
   list?: (TextList & {get: (s: string) => string})[];
   getMore?: () => void;
@@ -17,13 +18,15 @@ const List: React.FC<Prop> = (props) => {
     <div>
       {
         list && list.map((item, index) =>
-          <ListItem className={"pic"} key={index}>
-            <img src={item.get('imgUrl')} alt=""/>
-            <ListInfo>
-              <h3 className={"title"}>{item.get('title')}</h3>
-              <p className="desc">{item.get('desc')}</p>
-            </ListInfo>
-          </ListItem>
+          <Link to={`/detail?id=${item.get('id')}`} key={index}>
+            <ListItem className={"pic"}>
+              <img src={item.get('imgUrl')} alt=""/>
+              <ListInfo>
+                <h3 className={"title"}>{item.get('title')}</h3>
+                <p className="desc">{item.get('desc')}</p>
+              </ListInfo>
+            </ListItem>
+          </Link>
         )
       }
       <LoadMore onClick={getMore}>加载更多</LoadMore>
